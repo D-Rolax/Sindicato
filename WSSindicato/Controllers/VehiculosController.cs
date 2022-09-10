@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,6 +14,7 @@ namespace WSSindicato.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class VehiculosController : ControllerBase
     {
         [HttpGet]
@@ -23,7 +25,7 @@ namespace WSSindicato.Controllers
             {
                 using(SindicatoContext db=new SindicatoContext())
                 {
-                    var lst = db.TiposVehiculos.ToList();
+                    var lst = db.TiposVehiculos.OrderByDescending(d => d.Id).ToList();
                     res.Exito = 1;
                     res.Data = lst;
                 }
@@ -42,15 +44,15 @@ namespace WSSindicato.Controllers
             {
                 using(SindicatoContext db=new SindicatoContext())
                 {
-                    TiposVehiculos tipVehiculo = new TiposVehiculos();
-                    tipVehiculo.Placa = model.Placa;
-                    tipVehiculo.Modelo = model.Modelo;
-                    tipVehiculo.Tipo = model.Tipo;
-                    tipVehiculo.Marca = model.Marca;
-                    tipVehiculo.Color = model.Color;
-                    tipVehiculo.Estado = "Activo";
-                    tipVehiculo.Fecha = DateTime.Now.Date;
-                    db.TiposVehiculos.Add(tipVehiculo);
+                    var tipvehiculo = new TiposVehiculos();
+                    tipvehiculo.Placa = model.Placa;
+                    tipvehiculo.Modelo = model.Modelo;
+                    tipvehiculo.Tipo = model.Tipo;
+                    tipvehiculo.Marca = model.Marca;
+                    tipvehiculo.Color = model.Color;
+                    tipvehiculo.Estado = "Activo";
+                    tipvehiculo.Fecha = DateTime.Now.Date;
+                    db.TiposVehiculos.Add(tipvehiculo);
                     db.SaveChanges();
                     res.Exito = 1;
                 }

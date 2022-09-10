@@ -14,6 +14,14 @@ namespace WSSindicato.Models.Request
         public string Marca { get; set; }
         public string Color { get; set; }
         public string Estado { get; set; }
-        public DateTime Fecha { get; set; }
+        public List<Afiliado> Afiliados { get; set; }
+    }
+    public class Afiliado
+    {
+        public string Nombres { get; set; }
+        public string Apellidos { get; set; }
+        public int Ci { get; set; }
+        public string Direccion { get; set; }
+        public DateTime FechaNacimiento { get; set; }
     }
 }
