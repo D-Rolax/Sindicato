@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WSSindicato.Models;
 using WSSindicato.Models.Request;
 using WSSindicato.Models.Response;
+using WSSindicato.Services;
 
 namespace WSSindicato.Controllers
 {
@@ -17,18 +16,26 @@ namespace WSSindicato.Controllers
     [Authorize]
     public class VehiculosController : ControllerBase
     {
+        private readonly IVehiculoService _vehiculoService;
+        private readonly SindicatoContext db;
+
+        public VehiculosController(IVehiculoService vehiculoService, SindicatoContext db)
+        {
+            _vehiculoService = vehiculoService;
+            this.db = db;
+        }
         [HttpGet]
         public IActionResult Get()
         {
             Respuesta res = new Respuesta();
             try
             {
-                using(SindicatoContext db=new SindicatoContext())
-                {
-                    var lst = db.TiposVehiculos.OrderByDescending(d => d.Id).ToList();
+                    //var lst = db.TiposVehiculos.OrderByDescending(d => d.Id).ToList();
+                    var lst = db.TiposVehiculos
+                    .Include(d => d.Afiliados)
+                    .OrderByDescending(d => d.Id).ToList();
                     res.Exito = 1;
                     res.Data = lst;
-                }
             }
             catch (Exception ex)
             {
@@ -42,20 +49,8 @@ namespace WSSindicato.Controllers
             Respuesta res = new Respuesta();
             try
             {
-                using(SindicatoContext db=new SindicatoContext())
-                {
-                    var tipvehiculo = new TiposVehiculos();
-                    tipvehiculo.Placa = model.Placa;
-                    tipvehiculo.Modelo = model.Modelo;
-                    tipvehiculo.Tipo = model.Tipo;
-                    tipvehiculo.Marca = model.Marca;
-                    tipvehiculo.Color = model.Color;
-                    tipvehiculo.Estado = "Activo";
-                    tipvehiculo.Fecha = DateTime.Now.Date;
-                    db.TiposVehiculos.Add(tipvehiculo);
-                    db.SaveChanges();
-                    res.Exito = 1;
-                }
+                _vehiculoService.Add(model);
+                res.Exito = 1;
             }
             catch (Exception ex)
             {
@@ -69,20 +64,8 @@ namespace WSSindicato.Controllers
             Respuesta res = new Respuesta();
             try
             {
-                using (SindicatoContext db = new SindicatoContext())
-                {
-                    TiposVehiculos tipVehiculo = db.TiposVehiculos.Find(model.Id);
-                    tipVehiculo.Placa = model.Placa;
-                    tipVehiculo.Modelo = model.Modelo;
-                    tipVehiculo.Tipo = model.Tipo;
-                    tipVehiculo.Marca = model.Marca;
-                    tipVehiculo.Color = model.Color;
-                    tipVehiculo.Estado = model.Estado;
-                    tipVehiculo.Fecha = DateTime.Now.Date;
-                    db.Entry(tipVehiculo).State = EntityState.Modified;
-                    db.SaveChanges();
-                    res.Exito = 1;
-                }
+                _vehiculoService.Edit(model);
+                res.Exito = 1;
             }
             catch (Exception ex)
             {
@@ -96,13 +79,7 @@ namespace WSSindicato.Controllers
             Respuesta res = new Respuesta();
             try
             {
-                using (SindicatoContext db = new SindicatoContext())
-                {
-                    TiposVehiculos tipVehiculos = db.TiposVehiculos.Find(Id);
-                    db.Remove(tipVehiculos);
-                    db.SaveChanges();
-                    res.Exito = 1;
-                }
+
             }
             catch (Exception ex)
             {

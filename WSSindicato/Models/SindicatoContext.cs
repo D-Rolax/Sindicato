@@ -10,10 +10,6 @@ namespace WSSindicato.Models
 {
     public partial class SindicatoContext : DbContext
     {
-        public SindicatoContext()
-        {
-        }
-
         public SindicatoContext(DbContextOptions<SindicatoContext> options)
             : base(options)
         {
@@ -32,15 +28,6 @@ namespace WSSindicato.Models
         public virtual DbSet<TiposVehiculos> TiposVehiculos { get; set; }
         public virtual DbSet<Trakings> Trakings { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=Sindicato;Trusted_Connection=True");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

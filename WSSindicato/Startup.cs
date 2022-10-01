@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,8 +14,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WSSindicato.Models;
 using WSSindicato.Models.Common;
 using WSSindicato.Services;
+using WSSindicato.Services.GruposComunidad;
 
 namespace WSSindicato
 {
@@ -31,6 +34,9 @@ namespace WSSindicato
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<SindicatoContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("Cn")));
+    
             services.AddCors(options => {
                 options.AddPolicy(name: MiCors,
                                   builder =>
@@ -64,7 +70,16 @@ namespace WSSindicato
                 };
             });
 
+            services.AddControllersWithViews()
+            .AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IVehiculoService, VehiculoService>();
+            services.AddScoped<IAfiliadoService, AfiliadoService>();
+            services.AddScoped<IComunidadService, ComunidadService>();
+            services.AddScoped<IGrupoService, GrupoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

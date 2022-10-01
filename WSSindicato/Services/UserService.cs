@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -18,16 +19,16 @@ namespace WSSindicato.Services
     public class UserService : IUserService
     {
         private readonly AppSettings _appSettings;
+        private readonly SindicatoContext db;
 
-        public UserService(IOptions<AppSettings> appSettings)
+        public UserService(IOptions<AppSettings> appSettings,SindicatoContext db)
         {
             _appSettings = appSettings.Value;
+            this.db = db;
         }
         public UserResponse Auth(AuthRequest model)
         {
             UserResponse userResponse = new UserResponse();
-            using (var db = new SindicatoContext())
-            {
                 string spassword = Encrypt.GetSHA256(model.Password);
 
                 var usuario = db.Usuario.Where(d => d.Email == model.Email && d.Password == spassword).FirstOrDefault();
@@ -35,7 +36,6 @@ namespace WSSindicato.Services
                 if (usuario == null) return null;
                 userResponse.Email = usuario.Email;
                 userResponse.Token = GetToken(usuario);
-            }
             return userResponse;
         }
         private string GetToken(Usuario usuario)
