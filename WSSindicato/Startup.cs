@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,7 @@ using WSSindicato.Models;
 using WSSindicato.Models.Common;
 using WSSindicato.Services;
 using WSSindicato.Services.GruposComunidad;
+using WSSindicato.Services.HorarioViajes;
 
 namespace WSSindicato
 {
@@ -74,12 +76,19 @@ namespace WSSindicato
             .AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+            //services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            //{
+            //    options.User.RequireUniqueEmail = false;
+            //})
+            //.AddEntityFrameworkStores<Providers.Database.EFProvider.DataContext>()
+            //.AddDefaultTokenProviders();
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IVehiculoService, VehiculoService>();
             services.AddScoped<IAfiliadoService, AfiliadoService>();
             services.AddScoped<IComunidadService, ComunidadService>();
             services.AddScoped<IGrupoService, GrupoService>();
+            services.AddScoped<IRutasService, RutasService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

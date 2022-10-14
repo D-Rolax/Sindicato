@@ -19,8 +19,6 @@ namespace WSSindicato.Models
         public int? GrupoId { get; set; }
         public double Latitud { get; set; }
         public double Longitud { get; set; }
-        public DateTime Fecha { get; set; }
-        public string Estado { get; set; }
 
         public virtual Comunidades Comunidad { get; set; }
         public virtual Grupos Grupo { get; set; }

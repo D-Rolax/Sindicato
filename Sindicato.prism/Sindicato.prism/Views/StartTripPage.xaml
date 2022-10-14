@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
+             xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+             x:Class="Sindicato.prism.Views.StartTripPage"
+             BackgroundColor="{StaticResource ColorBackgroud}"
+             Title="{Binding Title}">
+    <AbsoluteLayout>
+        <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1"
+                     AbsoluteLayout.LayoutFlags="All"
+                     Padding="5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0"
+                       Grid.Column="0"
+                       Text="Grupo:"
+                       FontSize="Title"
+                       VerticalOptions="Center"/>
+                <Picker Grid.Row="0"
+                        Grid.Column="1"
+                        ItemDisplayBinding="{Binding Nombre}"
+                        ItemsSource="{Binding Grupos}"
+                        SelectedItem="{Binding Id}"
+                        BackgroundColor="{StaticResource ColorFontInverse}"
+                        Title="Seleccione un grupo"/>
+                <Label Grid.Row="1"
+                       Grid.Column="0"
+                       Text="Comunidad:"
+                       FontSize="Body"
+                       VerticalOptions="Center"/>
+                <Picker Grid.Row="1"
+                        Grid.Column="1"
+                        ItemDisplayBinding="{Binding Nombre}"
+                        ItemsSource="{Binding Comunidades}"
+                        SelectedItem="{Binding Id}"
+                        BackgroundColor="{StaticResource ColorFontInverse}"
+                        Title="Seleccione una comunidad"/>
+            </Grid>
+            <maps:Map x:Name="MyMap"
+                      MapType="Street"/>
+            <StackLayout Orientation="Horizontal">
+                <Button Command="{Binding StartTripCommand}"
+                        IsEnabled="{Binding IsEnabled}"
+                        Text="{Binding ButtonLabel}"/>
+                <Button Command="{Binding CancelTripCommand}"
+                        IsVisible="{Binding IsSecondButtonVisible}"
+                        Style="{StaticResource DangerButton}"
+                        Text="Cancelar"/>
+            </StackLayout>
+        </StackLayout>
+        <busyindicator:SfBusyIndicator AnimationType="SingleCircle" 
+                                       AbsoluteLayout.LayoutBounds=".5,.5,.5,.5"
+                	                   AbsoluteLayout.LayoutFlags="All"
+                	                   BackgroundColor="{StaticResource ColorDanger}"
+                	                   HorizontalOptions="Center"
+                	                   TextColor="{StaticResource ColorPrimary}"
+                	                   IsVisible="{Binding IsRunning}"
+                	                   Title="Cargando..."
+                	                   VerticalOptions="Center"
+                	                   ViewBoxWidth="80"
+                	                   ViewBoxHeight="80" />
+    </AbsoluteLayout>
+</ContentPage>

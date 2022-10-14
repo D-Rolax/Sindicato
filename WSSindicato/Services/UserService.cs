@@ -19,25 +19,26 @@ namespace WSSindicato.Services
     public class UserService : IUserService
     {
         private readonly AppSettings _appSettings;
-        private readonly SindicatoContext db;
+        private readonly SindicatoContext _db;
 
         public UserService(IOptions<AppSettings> appSettings,SindicatoContext db)
         {
             _appSettings = appSettings.Value;
-            this.db = db;
+            _db = db;
         }
-        public UserResponse Auth(AuthRequest model)
+        public TokenResponse Auth(AuthRequest model)
         {
-            UserResponse userResponse = new UserResponse();
-                string spassword = Encrypt.GetSHA256(model.Password);
+        TokenResponse userResponse = new TokenResponse();
+            string spassword = Encrypt.GetSHA256(model.Password);
 
-                var usuario = db.Usuario.Where(d => d.Email == model.Email && d.Password == spassword).FirstOrDefault();
+            var usuario = _db.Usuario.Where(d => d.Email == model.Email && d.Password == spassword).FirstOrDefault();
 
-                if (usuario == null) return null;
-                userResponse.Email = usuario.Email;
-                userResponse.Token = GetToken(usuario);
+            if (usuario == null) return null;
+            userResponse.Email = usuario.Email;
+            userResponse.Token = GetToken(usuario);
             return userResponse;
         }
+
         private string GetToken(Usuario usuario)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -51,7 +52,7 @@ namespace WSSindicato.Services
                         new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
                         new Claim(ClaimTypes.Email, usuario.Email)
                     }),
-                Expires = DateTime.UtcNow.AddDays(5),
+                Expires = DateTime.UtcNow.AddDays(60),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(llave), SecurityAlgorithms.HmacSha256)
             };

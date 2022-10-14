@@ -6,11 +6,11 @@ using Android.App;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Sindicato.Prism.Android")]
+[assembly: AssemblyTitle("Sindicato.prism.Android")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Sindicato.Prism.Android")]
+[assembly: AssemblyProduct("Sindicato.prism.Android")]
 [assembly: AssemblyCopyright("Copyright © YourCompany 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

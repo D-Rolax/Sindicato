@@ -77,7 +77,7 @@ namespace WSSindicato.Services
                     var ci = db.Afiliados.Any(x => x.Ci == item.Ci);
                     if (!ci)
                     {
-                        var afiliados = new Models.Afiliados();
+                        var afiliados = new Afiliados();
                         afiliados.Nombres = item.Nombres;
                         afiliados.Apellidos = item.Apellidos;
                         afiliados.Ci = item.Ci;

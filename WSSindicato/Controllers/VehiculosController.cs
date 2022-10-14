@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using WSSindicato.Models;
 using WSSindicato.Models.Request;
 using WSSindicato.Models.Response;
@@ -25,15 +26,15 @@ namespace WSSindicato.Controllers
             this.db = db;
         }
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             Respuesta res = new Respuesta();
             try
             {
                     //var lst = db.TiposVehiculos.OrderByDescending(d => d.Id).ToList();
-                    var lst = db.TiposVehiculos
+                    var lst = await db.TiposVehiculos
                     .Include(d => d.Afiliados)
-                    .OrderByDescending(d => d.Id).ToList();
+                    .OrderByDescending(d => d.Id).ToListAsync();
                     res.Exito = 1;
                     res.Data = lst;
             }

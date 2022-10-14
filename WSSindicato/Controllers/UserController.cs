@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WSSindicato.Models;
 using WSSindicato.Models.Request;
 using WSSindicato.Models.Response;
 using WSSindicato.Services;
@@ -15,10 +17,12 @@ namespace WSSindicato.Controllers
     public class UserController : ControllerBase
     {
         private IUserService _userService;
+        private readonly SindicatoContext _db;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, SindicatoContext db)
         {
             _userService = userService;
+            _db = db;
         }
 
         [HttpPost("login")]
@@ -36,6 +40,25 @@ namespace WSSindicato.Controllers
             respuesta.Data = userResponse;
 
             return Ok(respuesta);
+        }
+        [Authorize]
+        [HttpPost]
+        public IActionResult GetUserByEmail([FromBody] TokenResponse model)
+        {
+            Respuesta res = new Respuesta();
+            try
+            { 
+                 var usuario = _db.Usuario.
+                               Where(b => b.Email==model.Email);
+                res.Exito = 1;
+                res.Data = usuario;
+            }
+            catch (Exception ex)
+            {
+                res.Mensaje = ex.Message;
+                
+            }
+            return Ok(res);
         }
     }
 }

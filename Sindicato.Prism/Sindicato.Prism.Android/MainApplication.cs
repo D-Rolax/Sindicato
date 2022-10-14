@@ -2,7 +2,7 @@ using System;
 using Android.App;
 using Android.Runtime;
 
-namespace Sindicato.Prism.Droid
+namespace Sindicato.prism.Droid
 {
     [Application(
         Theme = "@style/MainTheme"
