@@ -41,9 +41,20 @@ namespace WSSindicato.Services.HorarioViajes
             throw new NotImplementedException();
         }
 
-        public void delete()
+        public async Task delete(RutasResponse model)
         {
-            throw new NotImplementedException();
+            using (SqlConnection db=new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd=new SqlCommand("sp_delete_rutas",db))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("IdComunidad", model.IdComunidad));
+                    cmd.Parameters.Add(new SqlParameter("IdGrupo", model.IdGrupo));
+                    await db.OpenAsync();
+                    await cmd.ExecuteNonQueryAsync();
+                    return;
+                }
+            }
         }
 
         public async Task<List<RutasResponse>> getRutas()

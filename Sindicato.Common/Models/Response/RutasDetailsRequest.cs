@@ -6,6 +6,8 @@ namespace Sindicato.common.Models.Response
 {
     public class RutasDetailsRequest
     {
-        public List<RutasDetailRequest> RutasDetails { get; set; }
+        public int IdComunidad { get; set; }
+        public int IdGrupo { get; set; }
+        public List<RutasDetailRequest> Rutas { get; set; }
     }
 }

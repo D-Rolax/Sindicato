@@ -82,6 +82,13 @@ namespace Sindicato.prism.ViewModels
             IsEnabled = false;
 
             string url = App.Current.Resources["UrlAPI"].ToString();
+            if (_apiService.CheckConnection())
+            {
+                IsRunning = false;
+                IsEnabled = true;
+                await App.Current.MainPage.DisplayAlert("Error de Conccion","No hay conexión a Internet","Aceptar");
+                return;
+            }
 
             AuthRequest request = new AuthRequest
             {

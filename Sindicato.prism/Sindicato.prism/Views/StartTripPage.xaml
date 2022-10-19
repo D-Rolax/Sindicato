@@ -28,9 +28,10 @@
                        VerticalOptions="Center"/>
                 <Picker Grid.Row="0"
                         Grid.Column="1"
+                        IsEnabled="{Binding IsEnabled}"
                         ItemDisplayBinding="{Binding Nombre}"
                         ItemsSource="{Binding Grupos}"
-                        SelectedItem="{Binding Id}"
+                        SelectedItem="{Binding Grupo}"
                         BackgroundColor="{StaticResource ColorFontInverse}"
                         Title="Seleccione un grupo"/>
                 <Label Grid.Row="1"
@@ -40,9 +41,10 @@
                        VerticalOptions="Center"/>
                 <Picker Grid.Row="1"
                         Grid.Column="1"
+                        IsEnabled="{Binding IsEnabled}"
                         ItemDisplayBinding="{Binding Nombre}"
                         ItemsSource="{Binding Comunidades}"
-                        SelectedItem="{Binding Id}"
+                        SelectedItem="{Binding Comunidad}"
                         BackgroundColor="{StaticResource ColorFontInverse}"
                         Title="Seleccione una comunidad"/>
             </Grid>

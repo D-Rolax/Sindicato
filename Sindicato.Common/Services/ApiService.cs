@@ -10,11 +10,88 @@ using System.Text;
 using System.Threading.Tasks;
 using WSSindicato.Models.Request;
 using WSSindicato.Models.Response;
+using Xamarin.Essentials;
 
 namespace Sindicato.common.Services
 {
     public class ApiService : IApiService
     {
+        public async Task<Respuesta> AddRutas(string urlBase, string servicePrefix, string controller, RutasDetailsRequest model, string TokenTipe, string accesToken)
+        {
+            try
+            {
+                string request = JsonConvert.SerializeObject(model);
+                StringContent content = new StringContent(request, Encoding.UTF8, "application/json");
+                HttpClient client = new HttpClient
+                {
+                    BaseAddress = new Uri(urlBase)
+                };
+                //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(TokenTipe,accesToken);
+                string url = $"{servicePrefix}{controller}";
+                HttpResponseMessage response = await client.PostAsync(url, content);
+                string answer = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Respuesta
+                    {
+                        Exito = 0,
+                        Mensaje = answer
+                    };
+                }
+                return new Respuesta
+                {
+                    Exito = 1
+                };
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public bool CheckConnection()
+        {
+            return Connectivity.NetworkAccess != NetworkAccess.Internet;
+        }
+
+        public async Task<Respuesta> DeleteRutasAsync(string urlBase, string ServicePrefix, string controller, RutasResponse model)
+        {
+            try
+            {
+                string request = JsonConvert.SerializeObject(model);
+                StringContent content = new StringContent(request, Encoding.UTF8, "application/json");
+                HttpClient client = new HttpClient
+                {
+                    BaseAddress = new Uri(urlBase)
+                };
+                string url = $"{ServicePrefix}{controller}";
+                HttpResponseMessage response = await client.PostAsync(url, content);
+                string answer = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Respuesta
+                    {
+                        Exito = 0,
+                        Mensaje = answer
+                    };
+                }
+                return new Respuesta
+                {
+                    Exito = 1
+                };
+            }
+            catch (Exception ex)
+            {
+
+                return new Respuesta
+                {
+                    Exito = 0,
+                    Mensaje = ex.Message
+                };
+            }
+        }
+
         public async Task<Respuesta> GetComunidad(string urlBase, string ServicePrefix, string controller)
         {
             try
@@ -40,7 +117,6 @@ namespace Sindicato.common.Services
                     Exito = 1,
                     Data = grupoResponse.Data
                 };
-
             }
             catch (Exception ex)
             {
@@ -74,8 +150,8 @@ namespace Sindicato.common.Services
                 GrupoResponse grupoResponse = JsonConvert.DeserializeObject<GrupoResponse>(result);
                 return new Respuesta
                 {
-                    Exito=1,
-                    Data=grupoResponse.Data
+                    Exito = 1,
+                    Data = grupoResponse.Data
                 };
 
             }
@@ -83,8 +159,8 @@ namespace Sindicato.common.Services
             {
                 return new Respuesta
                 {
-                    Exito=0,
-                    Mensaje=ex.Message
+                    Exito = 0,
+                    Mensaje = ex.Message
                 };
             }
         }
@@ -102,7 +178,7 @@ namespace Sindicato.common.Services
             }
         }
 
-        public async Task<Respuesta> GetListRutasAsync<T>(string urlBase, string servicePrefix, string controller)
+        public async Task<Respuesta> GetListAsync<T>(string urlBase, string servicePrefix, string controller)
         {
             try
             {

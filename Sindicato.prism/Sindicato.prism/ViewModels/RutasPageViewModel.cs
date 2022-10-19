@@ -38,7 +38,13 @@ namespace Sindicato.prism.ViewModels
         {
             IsRunning = true;
             string url = App.Current.Resources["UrlAPI"].ToString();
-            Respuesta response = await _apiService.GetListRutasAsync<RutasResponse>(url, "api","/Rutas");
+            if (_apiService.CheckConnection())
+            {
+                IsRunning = false;
+                await App.Current.MainPage.DisplayAlert("Error de Conccion", "No hay conexión a Internet", "Aceptar");
+                return;
+            }
+            Respuesta response = await _apiService.GetListAsync<RutasResponse>(url, "api","/Rutas");
             IsRunning = false;
             if (response.Data==null)
             {

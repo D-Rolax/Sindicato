@@ -24,6 +24,7 @@ namespace Sindicato.prism.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             //Plugin.CurrentActivity.CrossCurrentActivity.Current.Init(this, savedInstanceState);
             new SfBusyIndicatorRenderer();
+            Xamarin.FormsMaps.Init(this, savedInstanceState);
             LoadApplication(new App(new AndroidInitializer()));
         }
 

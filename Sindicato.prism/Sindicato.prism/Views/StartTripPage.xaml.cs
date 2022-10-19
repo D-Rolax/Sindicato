@@ -11,11 +11,26 @@ namespace Sindicato.prism.Views
     public partial class StartTripPage : ContentPage
     {
         private readonly IGeolocationService _geolocationService;
+        private static StartTripPage _instancia;
 
         public StartTripPage(IGeolocationService geolocationService)
         {
             InitializeComponent();
             _geolocationService = geolocationService;
+            _instancia = this;
+        }
+        public static StartTripPage GetInstancia()
+        {
+            return _instancia;
+        }
+        public void AddPin(Position position,string address, string label, PinType pinType)
+        {
+            MyMap.Pins.Add(new Pin { 
+                Address=address,
+                Label=label,
+                Position=position,
+                Type=pinType
+            });
         }
         protected override void OnAppearing()
         {
@@ -36,11 +51,36 @@ namespace Sindicato.prism.Views
                     Position position = new Position(
                         _geolocationService.Latitude,
                         _geolocationService.Longitude);
-                    MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(
-                        position,
-                        Distance.FromKilometers(.5)));
+                    MoveMap(position);
                 }
             }
+        }
+        public void MoveMap(Position position)
+        {
+            MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(
+            position,
+            Distance.FromKilometers(.2)));
+        }
+        public void DrawLine(Position a, Position b)
+        {
+            if (Device.RuntimePlatform == Device.Android)
+            {
+                Polygon polygon = new Polygon
+                {
+                    StrokeWidth = 10,
+                    StrokeColor = Color.FromHex("#8D07F6"),
+                    FillColor = Color.FromHex("#8D07F6"),
+                    Geopath = { a, b }
+                };
+
+                MyMap.MapElements.Add(polygon);
+            }
+            else
+            {
+                AddPin(b, string.Empty, string.Empty, PinType.SavedPin);
+            }
+
+            MoveMap(b);
         }
 
         private async Task<bool> CheckLocationPermisionsAsync()

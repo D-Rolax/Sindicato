@@ -12,6 +12,7 @@ using WSSindicato.Services.HorarioViajes;
 
 namespace WSSindicato.Controllers
 {
+    [Autorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RutasController : ControllerBase
@@ -24,6 +25,7 @@ namespace WSSindicato.Controllers
             _rutasService = rutasService ?? throw new ArgumentException(nameof(rutasService));
             _db = db;
         }
+        [HttpGet]
         public async Task<List<RutasResponse>> get()
         {
             return await _rutasService.getRutas();
@@ -110,5 +112,24 @@ namespace WSSindicato.Controllers
             }
             return Ok(res);
         }
+        [HttpPost("{delete}")]
+        public async Task delete([FromBody] RutasResponse model)
+        {
+            Respuesta res = new Respuesta();
+            try
+            {
+                await _rutasService.delete(model);
+                res.Exito = 1;
+            }
+            catch (Exception ex)
+            {
+
+                res.Mensaje = ex.Message;
+            }
+        }
+    }
+
+    internal class AutorizeAttribute : Attribute
+    {
     }
 }
