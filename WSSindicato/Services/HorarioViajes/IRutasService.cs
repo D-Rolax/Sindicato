@@ -8,9 +8,9 @@ namespace WSSindicato.Services.HorarioViajes
 {
     public interface IRutasService
     {
-        public void AddRuta(RutasResponse model);
-        public Task delete(RutasResponse model);
+        public void AddRuta(RutasRequest model);
+        public Task delete(RutasRequest model);
         public void cambioEstado();
-        public Task<List<RutasResponse>> getRutas();
+        public Task<List<RutasRequest>> getRutas();
     }
 }

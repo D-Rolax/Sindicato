@@ -5,20 +5,23 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
+using Sindicato.prism.Helpers;
 
 namespace Sindicato.prism.Views
 {
     public partial class HomePage : ContentPage
     {
         private readonly IGeolocationService _geolocatorService;
+        private readonly ILocatorCliente _locatorCliente;
 
-        public HomePage(IGeolocationService geolocationService)
+        public HomePage(IGeolocationService geolocationService, ILocatorCliente locatorCliente)
         {
             InitializeComponent();
             //MapView.MoveToRegion(
             //   MapSpan.FromCenterAndRadius(
             //       new Position(37, -122), Distance.FromMiles(1)));
             _geolocatorService = geolocationService;
+            _locatorCliente = locatorCliente;
         }
         protected override void OnAppearing()
         {

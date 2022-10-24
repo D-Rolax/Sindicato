@@ -39,7 +39,6 @@ namespace Sindicato.prism.ViewModels
         private RutasDetailsRequest _rutasDetailsRequest;
         private string _url;
         private TokenResponse _token;
-        private DelegateCommand _CancelTripComan;
 
         public StartTripPageViewModel(INavigationService navigationService,
             IGeolocationService geolocationService,
@@ -138,7 +137,7 @@ namespace Sindicato.prism.ViewModels
                 return;
             }
             _timer.Stop();
-            RutasResponse model = new RutasResponse
+            RutasRequest model = new RutasRequest
             {
                 IdComunidad = Comunidad.Id,
                 IdGrupo=Grupo.Id

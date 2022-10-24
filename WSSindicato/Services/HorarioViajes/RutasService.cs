@@ -20,7 +20,7 @@ namespace WSSindicato.Services.HorarioViajes
             _connectionString = configuration.GetConnectionString("Cn");
             _db = db;
         }
-        public void AddRuta(RutasResponse model)
+        public void AddRuta(RutasRequest model)
         {
             //Comunidades comunidad = _db.Comunidades.Find(model);
             //Grupos grupo = _db.Grupos.Find(model);
@@ -41,7 +41,7 @@ namespace WSSindicato.Services.HorarioViajes
             throw new NotImplementedException();
         }
 
-        public async Task delete(RutasResponse model)
+        public async Task delete(RutasRequest model)
         {
             using (SqlConnection db=new SqlConnection(_connectionString))
             {
@@ -57,14 +57,14 @@ namespace WSSindicato.Services.HorarioViajes
             }
         }
 
-        public async Task<List<RutasResponse>> getRutas()
+        public async Task<List<RutasRequest>> getRutas()
         {
             using (SqlConnection db= new SqlConnection(_connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand("sp_MostrarRutas",db))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    var response = new List<RutasResponse>();
+                    var response = new List<RutasRequest>();
                     await db.OpenAsync();
                     using (var reader= await cmd.ExecuteReaderAsync())
                     {
@@ -77,15 +77,15 @@ namespace WSSindicato.Services.HorarioViajes
                 }
             }
         }
-        private RutasResponse MapTovalue(SqlDataReader reader)
+        private RutasRequest MapTovalue(SqlDataReader reader)
         {
-            return new RutasResponse()
+            return new RutasRequest()
             {
                 IdComunidad = (int)reader["IdComunidad"],
                 NombreComunidad = reader["NombreComunidad"].ToString(),
                 IdGrupo = (int)reader["IdGrupo"],
                 NombreGrupo = reader["NombreGrupo"].ToString(),
-                Estado = reader["Estado"].ToString()
+                Estado = reader["Estado"].ToString(),
             };
         }
     }

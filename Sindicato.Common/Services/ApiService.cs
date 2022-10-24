@@ -55,7 +55,7 @@ namespace Sindicato.common.Services
             return Connectivity.NetworkAccess != NetworkAccess.Internet;
         }
 
-        public async Task<Respuesta> DeleteRutasAsync(string urlBase, string ServicePrefix, string controller, RutasResponse model)
+        public async Task<Respuesta> DeleteRutasAsync(string urlBase, string ServicePrefix, string controller, RutasRequest model)
         {
             try
             {
@@ -197,11 +197,11 @@ namespace Sindicato.common.Services
                         Mensaje = result
                     };
                 }
-                List<T> list = JsonConvert.DeserializeObject<List<T>>(result);
+                ResponseRutasCompleto rutasCompleto = JsonConvert.DeserializeObject<ResponseRutasCompleto>(result);
                 return new Respuesta
                 {
                     Exito = 1,
-                    Data = list
+                    Data = rutasCompleto.Data
                 };
             }
             catch (Exception ex)
@@ -210,6 +210,44 @@ namespace Sindicato.common.Services
                 {
                     Exito = 0,
                     Mensaje=ex.Message
+                };
+            }
+        }
+
+        public async Task<Respuesta> GetRutas(string urlBase, string ServicePrefix, string controller, RutasRequest model)
+        {
+            try
+            {
+                string requestString = JsonConvert.SerializeObject(model);
+                StringContent content = new StringContent(requestString, Encoding.UTF8, "application/json");
+                HttpClient client = new HttpClient
+                {
+                    BaseAddress = new Uri(urlBase)
+                };
+                string url = $"{ServicePrefix}{controller}";
+                HttpResponseMessage response = await client.PostAsync(url, content);
+                string result = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Respuesta
+                    {
+                        Exito = 0,
+                        Mensaje = result
+                    };
+                }
+                RutasResponse rutas = JsonConvert.DeserializeObject<RutasResponse>(result);
+                return new Respuesta
+                {
+                    Exito = 1,
+                    Data = rutas.Data
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Respuesta
+                {
+                    Exito = 0,
+                    Mensaje = ex.Message
                 };
             }
         }

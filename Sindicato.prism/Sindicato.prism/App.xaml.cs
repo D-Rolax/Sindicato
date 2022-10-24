@@ -1,6 +1,7 @@
 using Prism;
 using Prism.Ioc;
 using Sindicato.common.Services;
+using Sindicato.prism.Helpers;
 using Sindicato.prism.ViewModels;
 using Sindicato.prism.Views;
 using Syncfusion.Licensing;
@@ -39,6 +40,9 @@ namespace Sindicato.prism
             containerRegistry.RegisterForNavigation<RutasPage, RutasPageViewModel>();
             containerRegistry.Register<IApiService, ApiService>();
             containerRegistry.RegisterForNavigation<StartTripPage, StartTripPageViewModel>();
+            containerRegistry.RegisterForNavigation<MyRutasDetailPage, MyRutasDetailPageViewModel>();
+            containerRegistry.RegisterForNavigation<VerViajePage, VerViajePageViewModel>();
+            containerRegistry.Register<ILocatorCliente, LocatorCliente>();
         }
     }
 }

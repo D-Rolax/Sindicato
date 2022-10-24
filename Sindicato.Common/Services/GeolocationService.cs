@@ -1,8 +1,10 @@
 ﻿using Plugin.Geolocator;
+using Sindicato.common.Models.Response;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using WSSindicato.Models.Response;
 
 namespace Sindicato.common.Services
 {

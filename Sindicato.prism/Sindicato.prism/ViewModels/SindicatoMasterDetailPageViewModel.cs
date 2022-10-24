@@ -60,7 +60,7 @@ namespace Sindicato.prism.ViewModels
                 },
                 new Menu{
                     Icono="ic_add_road",
-                    PagNavigation="RutasPage",
+                    PagNavigation="VerViajePage",
                     Titulo="Rutas de viaje"
                 },
                 new Menu{

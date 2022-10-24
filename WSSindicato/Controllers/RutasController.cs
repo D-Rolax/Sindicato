@@ -25,25 +25,25 @@ namespace WSSindicato.Controllers
             _rutasService = rutasService ?? throw new ArgumentException(nameof(rutasService));
             _db = db;
         }
-        [HttpGet]
-        public async Task<List<RutasResponse>> get()
-        {
-            return await _rutasService.getRutas();
-            //Respuesta res = new Respuesta();
-            //try
-            //{
-            //    var rutas = await _rutasService.getRutas();
-            //    res.Exito = 1;
-            //    res.Data = rutas;
-            //}
-            //catch (Exception ex)
-            //{
-            //    res.Mensaje = ex.Message;
-            //}
-            //return Ok(res);
-        }
-        [HttpGet("{detallerutas}")]
-        public IActionResult getrutas([FromBody] RutasResponse model)
+        //[HttpGet]
+        //public async Task<List<RutasRequest>> get()
+        //{
+        //    return await _rutasService.getRutas();
+        //    //Respuesta res = new Respuesta();
+        //    //try
+        //    //{
+        //    //    var rutas = await _rutasService.getRutas();
+        //    //    res.Exito = 1;
+        //    //    res.Data = rutas;
+        //    //}
+        //    //catch (Exception ex)
+        //    //{
+        //    //    res.Mensaje = ex.Message;
+        //    //}
+        //    //return Ok(res);
+        //}
+        [HttpPut("{rutas}")]
+        public IActionResult getrutas([FromBody] RutasRequest model)
         {
             if (!ModelState.IsValid)
             {
@@ -63,41 +63,58 @@ namespace WSSindicato.Controllers
             }
             return Ok(res);
         }
-        //[HttpGet]
-        //public async Task<IActionResult> get()
-        //{
-        //    Respuesta res = new Respuesta();
-        //    try
-        //    {
-        //        var list = await _db.grupos.include(x => x.rutas).tolistasync();
-        //        return await _rutasservice.getrutas();
-        //        var grupos_comuidad = await (from rutas in _db.rutas
-        //                                     join comunidad in _db.comunidades
-        //                                     on rutas.comunidadid equals comunidad.id
-        //                                     join grupos in _db.grupos
-        //                                     on rutas.grupoid equals grupos.id
-        //                                     select new
-        //                                     {
-        //                                         grupos.id,
-        //                                         grupos.nombre,
-        //                                         idcomunidad = comunidad.id,
-        //                                         nombrecomunidad = comunidad.nombre
-
-        //                                     }).groupby(x => new { id = x.id, nombre = x.nombre, idcomunidad = x.idcomunidad, nombrecomunidad = x.nombrecomunidad }).
-        //                                     select(x => new { x.key, count = x.count() }).todictionaryasync(x => x.key, x => x.count);
-
-
-        //        res.Exito = 1;
-        //        res.Data = "";
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        res.Mensaje = ex.Message;
-        //    }
-        //    return Ok(res);
-        //}
+        [HttpGet]
+        public async Task<IActionResult> get()
+        {
+            Respuesta res = new Respuesta();
+            try
+            {
+                //var list = _db.Grupos.Include(g => g.Rutas);
+                //var list2 = _db.Comunidades.Include(c => c.Rutas);
+                //var list3 = list.Include(list2).ToListAsync();
+                //return await _rutasservice.getrutas();
+                var grupos_comuidad = await (from r in _db.Rutas
+                                             join c in _db.Comunidades
+                                             on r.ComunidadId equals c.Id
+                                             join g in _db.Grupos
+                                             on r.GrupoId equals g.Id
+                                             //group r by new { idGrupo = g.Id, idComunidad = c.Id, nombreGrupo = g.Nombre,
+                                             //    nombreComunidad = c.Nombre,g.Estado,r.ComunidadId,r.GrupoId} into gr
+                                             //select new
+                                             //{
+                                             //    IdGrupo = gr.Key.idGrupo,
+                                             //    IdComunidad = gr.Key.idComunidad,
+                                             //    NombreGrupo = gr.Key.nombreGrupo,
+                                             //    NombreComunidad = gr.Key.nombreComunidad,
+                                             //    Estado = gr.Key.Estado
+                                             //}
+                                             select new
+                                             {
+                                                 IdGrupo = g.Id,
+                                                 IdComunidad = c.Id,
+                                                 NombreGrupo = g.Nombre,
+                                                 NombreComunidad = c.Nombre,
+                                                 Estado = g.Estado,
+                                                 Rutas=g.Rutas.Select(x=>new { 
+                                                    Latitud=x.Latitud,
+                                                    Longitud=x.Longitud
+                                                 })
+                                             }
+                                             ).ToListAsync();//new { idGrupo = x.IdGrupo, IdComunidad = x.IdComunidad, NombreGrupo = x.NombreComunidad, nombrecomunidad = x.NombreComunidad, estado = x.Estado, ruta = x.Rutas }).ToListAsync();
+                                                             //Select(x => new { x.Key, count = x.Count() }).ToDictionaryAsync(x => x.Key, x => x.count);
+                var agrupar = from db in grupos_comuidad group db by new { db.IdGrupo,db.IdComunidad,db.NombreGrupo,db.NombreComunidad,db.Estado} into g select g.Key;
+                var grupos_comuidad_rutas = from db in agrupar select new {db.IdGrupo,db.IdComunidad,db.NombreGrupo,db.NombreComunidad,db.Estado, Rutas = _db.Rutas.Where(x=>x.ComunidadId==db.IdComunidad && x.GrupoId==db.IdGrupo)};
+                res.Exito = 1;
+                res.Data = grupos_comuidad_rutas;
+            }
+            catch (Exception ex)
+            {
+                res.Mensaje = ex.Message;
+            }
+            return Ok(res);
+        }
         [HttpPost]
-        public IActionResult Add(RutasResponse model)
+        public IActionResult Add(RutasRequest model)
         {
             Respuesta res = new Respuesta();
             try
@@ -113,7 +130,7 @@ namespace WSSindicato.Controllers
             return Ok(res);
         }
         [HttpPost("{delete}")]
-        public async Task delete([FromBody] RutasResponse model)
+        public async Task delete([FromBody] RutasRequest model)
         {
             Respuesta res = new Respuesta();
             try

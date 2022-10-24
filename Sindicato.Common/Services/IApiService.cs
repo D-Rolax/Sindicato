@@ -18,6 +18,7 @@ namespace Sindicato.common.Services
         Task<Respuesta> GetGrupos(string urlBase, string ServicePrefix, string controller);
         Task<Respuesta> GetComunidad(string urlBase, string ServicePrefix, string controller);
         bool CheckConnection();
-        Task<Respuesta> DeleteRutasAsync(string urlBase, string ServicePrefix, string controller, RutasResponse model);
+        Task<Respuesta> DeleteRutasAsync(string urlBase, string ServicePrefix, string controller, RutasRequest model);
+        Task<Respuesta> GetRutas(string urlBase, string ServicePrefix, string controller, RutasRequest model);
     }
 }

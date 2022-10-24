@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="Sindicato.prism.Views.MyRutasDetailPage"
+             BackgroundColor="{StaticResource ColorBackgroud}"
+             xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"    
+             Title="{Binding Title}">
+    <AbsoluteLayout>
+        <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1"
+                     AbsoluteLayout.LayoutFlags="All"
+                     Padding="5">
+            <ScrollView>
+                <StackLayout>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0"
+                               Grid.Row="0"
+                               FontAttributes="Bold"
+                               Text="Grupo:"/>
+                        <Label Grid.Column="1"
+                               Grid.Row="0"
+                               Text="{Binding Grupo}"/>
+                        <Label Grid.Column="0"
+                               Grid.Row="1"
+                               FontAttributes="Bold"
+                               Text="Comunidad:"/>
+                        <Label Grid.Column="1"
+                               Grid.Row="1"
+                               Text="{Binding Comunidad}"/>
+                        <Label Grid.Column="0"
+                               Grid.Row="2"
+                               FontAttributes="Bold"
+                               Text="Estado:"/>
+                        <Label Grid.Column="1"
+                               Grid.Row="2"
+                               Text="{Binding Estado}"/>
+                    </Grid>
+                    <Slider x:Name="MySlider"
+                                Minimum="0"
+                                Maximum="2"
+                                Value="1"
+                                ValueChanged="MySlider_ValueChanged"/>
+                    <maps:Map x:Name="MyMap"
+                              HeightRequest="500"
+                              MapType="Street"/>
+                </StackLayout>
+            </ScrollView>
+        </StackLayout>
+    </AbsoluteLayout>
+</ContentPage>

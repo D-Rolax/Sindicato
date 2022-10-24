@@ -89,6 +89,8 @@ namespace WSSindicato
             services.AddScoped<IComunidadService, ComunidadService>();
             services.AddScoped<IGrupoService, GrupoService>();
             services.AddScoped<IRutasService, RutasService>();
+            //services.AddSignalR();
+            //services.AddHostedService<PopulationHostedService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -112,6 +114,7 @@ namespace WSSindicato
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                //endpoints.MapHub<TrakingHub>("/trakingHub");
             });
         }
     }

@@ -23,9 +23,9 @@
                         <Frame CornerRadius="10"
                                BackgroundColor="{StaticResource ColorSecondary}">
                             <Grid>
-                                <!--<Grid.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding SelectUserCommand}"/>
-                                </Grid.GestureRecognizers>-->
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SelectRutasCommand}"/>
+                                </Grid.GestureRecognizers>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
