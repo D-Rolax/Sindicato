@@ -30,10 +30,10 @@ namespace WSSindicato.Controllers
         {
             try
             {
-                    //var lst = db.TiposVehiculos.OrderByDescending(d => d.Id).ToList();
-                    var lst = db.Comunidades.OrderByDescending(d => d.Id).ToList();
-                    res.Exito = 1;
-                    res.Data = lst;
+                //var lst = db.TiposVehiculos.OrderByDescending(d => d.Id).ToList();
+                var lst = db.Comunidades.OrderByDescending(d => d.Id).ToList();
+                res.Exito = 1;
+                res.Data = lst;
             }
             catch (Exception ex)
             {
@@ -55,7 +55,7 @@ namespace WSSindicato.Controllers
             }
             return Ok(res);
         }
-        [HttpPut] 
+        [HttpPut]
         public IActionResult edit(ComunidadRequest model)
         {
             try
@@ -67,7 +67,7 @@ namespace WSSindicato.Controllers
             catch (Exception ex)
             {
 
-                res.Mensaje=ex.Message;
+                res.Mensaje = ex.Message;
             }
             return Ok(res);
         }

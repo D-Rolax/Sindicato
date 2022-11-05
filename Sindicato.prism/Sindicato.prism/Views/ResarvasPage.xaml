@@ -5,5 +5,10 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Sindicato.prism.Views.ResarvasPage"
              Title="{Binding Title}">
-  
+    <StackLayout>
+        <Button Command="{Binding VerVaiejCommand}"
+                        IsVisible="{Binding IsSecondButtonVisible}"
+                        Style="{StaticResource DangerButton}"
+                        Text="Cancelar"/>
+    </StackLayout>
 </ContentPage>

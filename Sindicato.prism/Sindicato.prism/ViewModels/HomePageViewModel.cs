@@ -1,11 +1,17 @@
-﻿using Prism.Commands;
+﻿using Newtonsoft.Json;
+using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Sindicato.common.Helpers;
+using Sindicato.common.Models.Response;
+using Sindicato.common.Services;
 using Sindicato.prism.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WSSindicato.Hubs;
+using Xamarin.Essentials;
+using Xamarin.Forms.Maps;
 
 namespace Sindicato.prism.ViewModels
 {
@@ -14,11 +20,13 @@ namespace Sindicato.prism.ViewModels
         private readonly INavigationService _navigationService;
         private DelegateCommand _startTripCommand;
 
-        public HomePageViewModel(INavigationService navigationService):base(navigationService)
+        public HomePageViewModel(INavigationService navigationService,
+            ISignalService signalService) : base(navigationService)
         {
             Title = "Sindicato Señor de Santiago";
             _navigationService = navigationService;
         }
+
         public DelegateCommand StartTripCommand => _startTripCommand ?? (_startTripCommand= new DelegateCommand(StartTripAsync));
 
         private async void StartTripAsync()

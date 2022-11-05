@@ -17,9 +17,9 @@ namespace WSSindicato.Services
         }
         public void delete(int Id)
         {
-                Afiliados afiliados = db.Afiliados.Find(Id);
-                db.Remove(afiliados);
-                db.SaveChanges();
+            Afiliados afiliados = db.Afiliados.Find(Id);
+            db.Remove(afiliados);
+            db.SaveChanges();
         }
 
         public void Update()

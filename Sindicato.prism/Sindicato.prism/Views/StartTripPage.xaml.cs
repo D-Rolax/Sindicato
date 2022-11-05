@@ -11,12 +11,14 @@ namespace Sindicato.prism.Views
     public partial class StartTripPage : ContentPage
     {
         private readonly IGeolocationService _geolocationService;
+        private readonly ISignalService _signalService;
         private static StartTripPage _instancia;
 
-        public StartTripPage(IGeolocationService geolocationService)
+        public StartTripPage(IGeolocationService geolocationService,ISignalService signalService)
         {
             InitializeComponent();
             _geolocationService = geolocationService;
+            _signalService = signalService;
             _instancia = this;
         }
         public static StartTripPage GetInstancia()

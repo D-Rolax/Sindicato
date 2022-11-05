@@ -1,13 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.SignalR.Client;
+using Newtonsoft.Json;
+using Sindicato.common.Hubs;
 using Sindicato.common.Models.Response;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using WSSindicato.Hubs;
 using WSSindicato.Models.Request;
 using WSSindicato.Models.Response;
 using Xamarin.Essentials;
@@ -16,6 +20,10 @@ namespace Sindicato.common.Services
 {
     public class ApiService : IApiService
     {
+        public event EventHandler<MessageItem> MessageReceived;
+        public event EventHandler Connecting;
+        public event EventHandler Connected;
+        public static int DeviceId { get; set; }
         public async Task<Respuesta> AddRutas(string urlBase, string servicePrefix, string controller, RutasDetailsRequest model, string TokenTipe, string accesToken)
         {
             try
@@ -323,6 +331,43 @@ namespace Sindicato.common.Services
                 {
                     Exito=0,
                     Mensaje=ex.Message
+                };
+            }
+        }
+
+        public async Task<Respuesta> AddComentario(string urlBase, string ServicePrefix, string controller, CalificacionRequest model)
+        {
+            try
+            {
+                string requestString = JsonConvert.SerializeObject(model);
+                StringContent content = new StringContent(requestString, Encoding.UTF8, "application/json");
+                HttpClient client = new HttpClient
+                {
+                    BaseAddress = new Uri(urlBase)
+                };
+                //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(tokenType, accessToken);
+                string url = $"{ServicePrefix}{controller}";
+                HttpResponseMessage response = await client.PostAsync(url, content);
+                string result = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Respuesta
+                    {
+                        Exito = 0,
+                        Mensaje = result
+                    };
+                }
+                return new Respuesta
+                {
+                    Exito = 1,
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Respuesta
+                {
+                    Exito = 0,
+                    Mensaje = ex.Message
                 };
             }
         }

@@ -1,39 +1,35 @@
-﻿using Sindicato.common.Services;
-using Plugin.Permissions;
+﻿using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
-using System.Collections.Generic;
+using Sindicato.common.Services;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
-using Sindicato.prism.Helpers;
 
 namespace Sindicato.prism.Views
 {
-    public partial class HomePage : ContentPage
+    public partial class VerRutaPage : ContentPage
     {
-        private static HomePage _instancia;
-        private readonly IGeolocationService _geolocatorService;
+        private static VerRutaPage _instancia;
         private readonly ISignalService _signalService;
-
-        public HomePage(IGeolocationService geolocationService, ISignalService signalService)
+        private readonly IGeolocationService _geolocatorService;
+        private Position _position1;
+        private Position _position2;
+        public VerRutaPage(IGeolocationService geolocationService, ISignalService signalService)
         {
             InitializeComponent();
             _signalService = signalService;
-            //MapView.MoveToRegion(
-            //   MapSpan.FromCenterAndRadius(
-            //       new Position(37, -122), Distance.FromMiles(1)));
             _geolocatorService = geolocationService;
-        }
-        public static HomePage GetInstancia()
-        {
-            return _instancia;
+            _instancia = this;
         }
         protected override void OnAppearing()
         {
             base.OnAppearing();
             MoveMapToCurrentPositionAsync();
         }
-
+        public static VerRutaPage GetInstancia()
+        {
+            return _instancia;
+        }
         private async void MoveMapToCurrentPositionAsync()
         {
             bool isLocationPermision = await CheckLocationPermisionsAsync();
@@ -56,7 +52,18 @@ namespace Sindicato.prism.Views
         {
             MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(
             position,
-            Distance.FromKilometers(.2)));
+            Distance.FromKilometers(1)));
+        }
+        int cont = 1;
+        public void AddPin(Position position, string address, string label, PinType pinType)
+        {
+            MyMap.Pins.Add(new Pin
+            {
+                Address = address,
+                Label = label,
+                Position = position,
+                Type = pinType
+            });
         }
         private async Task<bool> CheckLocationPermisionsAsync()
         {

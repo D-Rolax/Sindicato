@@ -19,31 +19,31 @@ namespace WSSindicato.Services.GruposComunidad
         }
         public void Add(ComunidadRequest model)
         {
-                var comunidad = new Comunidades();
-                comunidad.Nombre = model.Nombre;
-                comunidad.Descripcion = model.Descripcion;
-                comunidad.Estado = "Activo";
-                comunidad.Fecha = DateTime.Now.Date;
-                _db.Comunidades.Add(comunidad);
-                _db.SaveChanges();
+            var comunidad = new Comunidades();
+            comunidad.Nombre = model.Nombre;
+            comunidad.Descripcion = model.Descripcion;
+            comunidad.Estado = "Activo";
+            comunidad.Fecha = DateTime.Now.Date;
+            _db.Comunidades.Add(comunidad);
+            _db.SaveChanges();
         }
 
         public void delete(int Id)
         {
-                Comunidades tipVehiculos = _db.Comunidades.Find(Id);
-                _db.Remove(tipVehiculos);
-                _db.SaveChanges();
+            Comunidades tipVehiculos = _db.Comunidades.Find(Id);
+            _db.Remove(tipVehiculos);
+            _db.SaveChanges();
         }
 
         public void Edit(ComunidadRequest model)
         {
-                Comunidades comunidad = _db.Comunidades.Find(model.Id);
-                comunidad.Nombre = model.Nombre;
-                comunidad.Descripcion = model.Descripcion;
-                comunidad.Estado = model.Estado;
-                comunidad.Fecha = DateTime.Now.Date;
-                _db.Entry(comunidad).State = EntityState.Modified;
-                _db.SaveChanges();
+            Comunidades comunidad = _db.Comunidades.Find(model.Id);
+            comunidad.Nombre = model.Nombre;
+            comunidad.Descripcion = model.Descripcion;
+            comunidad.Estado = model.Estado;
+            comunidad.Fecha = DateTime.Now.Date;
+            _db.Entry(comunidad).State = EntityState.Modified;
+            _db.SaveChanges();
         }
 
         public void Get()

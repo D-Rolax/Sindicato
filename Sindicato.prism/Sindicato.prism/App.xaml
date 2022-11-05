@@ -39,6 +39,9 @@
             <Setter Property="BackgroundColor" Value="{StaticResource ColorDanger}" />
         </Style>
 
+        <Style TargetType="Editor">
+            <Setter Property="BackgroundColor" Value="{StaticResource ColorFontInverse}" />
+        </Style>
 
     </Application.Resources>
 </prism:PrismApplication>

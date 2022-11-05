@@ -43,9 +43,9 @@ namespace WSSindicato.Services.HorarioViajes
 
         public async Task delete(RutasRequest model)
         {
-            using (SqlConnection db=new SqlConnection(_connectionString))
+            using (SqlConnection db = new SqlConnection(_connectionString))
             {
-                using (SqlCommand cmd=new SqlCommand("sp_delete_rutas",db))
+                using (SqlCommand cmd = new SqlCommand("sp_delete_rutas", db))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("IdComunidad", model.IdComunidad));
@@ -59,14 +59,14 @@ namespace WSSindicato.Services.HorarioViajes
 
         public async Task<List<RutasRequest>> getRutas()
         {
-            using (SqlConnection db= new SqlConnection(_connectionString))
+            using (SqlConnection db = new SqlConnection(_connectionString))
             {
-                using (SqlCommand cmd = new SqlCommand("sp_MostrarRutas",db))
+                using (SqlCommand cmd = new SqlCommand("sp_MostrarRutas", db))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     var response = new List<RutasRequest>();
                     await db.OpenAsync();
-                    using (var reader= await cmd.ExecuteReaderAsync())
+                    using (var reader = await cmd.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
                         {

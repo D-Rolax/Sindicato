@@ -47,6 +47,8 @@
                         SelectedItem="{Binding Comunidad}"
                         BackgroundColor="{StaticResource ColorFontInverse}"
                         Title="Seleccione una comunidad"/>
+                <Label Text="{Binding LbConnecte}"/>
+
             </Grid>
             <maps:Map x:Name="MyMap"
                       MapType="Street"/>

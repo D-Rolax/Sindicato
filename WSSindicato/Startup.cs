@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WSSindicato.Hubs;
 using WSSindicato.Models;
 using WSSindicato.Models.Common;
 using WSSindicato.Services;
@@ -89,7 +90,7 @@ namespace WSSindicato
             services.AddScoped<IComunidadService, ComunidadService>();
             services.AddScoped<IGrupoService, GrupoService>();
             services.AddScoped<IRutasService, RutasService>();
-            //services.AddSignalR();
+            services.AddSignalR();
             //services.AddHostedService<PopulationHostedService>();
         }
 
@@ -114,7 +115,7 @@ namespace WSSindicato
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                //endpoints.MapHub<TrakingHub>("/trakingHub");
+                endpoints.MapHub<TrakingHub>("/trakingHub");
             });
         }
     }

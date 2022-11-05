@@ -16,7 +16,7 @@ namespace Sindicato.prism.ViewModels
     public class SindicatoMasterDetailPageViewModel : ViewModelBase
     {
         private readonly INavigationService _navigationService;
-        private List<DatosUsuario> _user;
+        private List<DatosUsuarioRequest> _user;
 
         public SindicatoMasterDetailPageViewModel(INavigationService navigationService):base(navigationService)
         {
@@ -24,7 +24,7 @@ namespace Sindicato.prism.ViewModels
             LoadUser();
             LoadMenus();
         }
-        public List<DatosUsuario> user
+        public List<DatosUsuarioRequest> user
         {
             get => _user;
             set => SetProperty(ref _user, value);
@@ -34,7 +34,7 @@ namespace Sindicato.prism.ViewModels
         {
             if (Settings.IsLogin)
             {
-                user = JsonConvert.DeserializeObject <List<DatosUsuario>>(Settings.User);
+                user = JsonConvert.DeserializeObject <List<DatosUsuarioRequest>>(Settings.User);
             }
         }
         
@@ -50,18 +50,18 @@ namespace Sindicato.prism.ViewModels
                 },
                 new Menu{
                     Icono="ic_featured_play_list",
-                    PagNavigation="ResarvasPage",
+                    PagNavigation="VerRutaPage",
                     Titulo="Reserva de pasajes"
                 },
-                new Menu{
-                    Icono="ic_access_alarm",
-                    PagNavigation="HorariosPage",
-                    Titulo="Horarios de salida"
-                },
+                //new Menu{
+                //    Icono="ic_access_alarm",
+                //    PagNavigation="EndTrip",
+                //    Titulo="Salidas"
+                //},
                 new Menu{
                     Icono="ic_add_road",
-                    PagNavigation="VerViajePage",
-                    Titulo="Rutas de viaje"
+                    PagNavigation="RutasPage",
+                    Titulo="Viajes"
                 },
                 new Menu{
                     Icono="ic_login",

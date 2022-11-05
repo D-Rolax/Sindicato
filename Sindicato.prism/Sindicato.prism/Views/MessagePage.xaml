@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="Sindicato.prism.Views.MessagePage"
+             Title="{Binding Title}">
+    
+    <StackLayout Margin="10,50"
+                 HorizontalOptions="Center"
+                 VerticalOptions="Center">
+        <Label Text="{Binding Lbstate}"/>
+        <Entry Text="{Binding EnId}"
+               Placeholder="Device id"
+               Keyboard="Numeric"/>
+        <Button Command="{Binding ConnectCommand}"
+                Text="Connect"/>
+            <Entry Text="{Binding SendMessage}"
+               Margin="0,50,0,0"
+               Placeholder="Text menssage"/>
+        <Button 
+                Text="Send to all"
+                Command="{Binding SendToCommand}"/>
+        <Entry Text="{Binding EndTargtId}"
+               Margin="0,50,0,0"
+               Placeholder="Target device id"
+               Keyboard="Numeric"/>
+        <Button 
+                Text="Send to device"
+                Command="{Binding SendDevice}"/>
+    </StackLayout>
+</ContentPage>

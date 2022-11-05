@@ -41,8 +41,11 @@ namespace Sindicato.prism
             containerRegistry.Register<IApiService, ApiService>();
             containerRegistry.RegisterForNavigation<StartTripPage, StartTripPageViewModel>();
             containerRegistry.RegisterForNavigation<MyRutasDetailPage, MyRutasDetailPageViewModel>();
-            containerRegistry.RegisterForNavigation<VerViajePage, VerViajePageViewModel>();
             containerRegistry.Register<ILocatorCliente, LocatorCliente>();
+            containerRegistry.RegisterForNavigation<MessagePage, MessagePageViewModel>();
+            containerRegistry.Register<ISignalService, SignalRService>();
+            containerRegistry.RegisterForNavigation<EndTrip, EndTripViewModel>();
+            containerRegistry.RegisterForNavigation<VerRutaPage, VerRutaPageViewModel>();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Sindicato.common.Models.Response;
 using System;
 using System.Collections.Generic;
@@ -8,32 +7,34 @@ using System.Linq;
 using System.Threading.Tasks;
 using WSSindicato.Models;
 using WSSindicato.Models.Response;
-using WSSindicato.Services;
 
 namespace WSSindicato.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TrakingController : ControllerBase
+    public class CalificacionController : ControllerBase
     {
         private readonly SindicatoContext _db;
 
-        public TrakingController(SindicatoContext db)
+        public CalificacionController(SindicatoContext db)
         {
             _db = db;
         }
         [HttpPost]
-        public IActionResult post(RutasRequest model)
+        public IActionResult post(CalificacionRequest model)
         {
             Respuesta res = new Respuesta();
             try
             {
-                var List = (from t in _db.Rutas
-                            orderby t.Id descending
-                            select new { t.Id, t.GrupoId, t.ComunidadId, t.Latitud, t.Longitud }
-                                  ).Where(x => x.GrupoId == model.IdGrupo && x.ComunidadId == model.IdComunidad).First();
+                var calificacion = new Calificacion();
+                calificacion.ChoferId = model.IdChofer;
+                calificacion.Puntaje = model.Puntaje;
+                calificacion.Descripcion = model.Descripcion;
+                calificacion.Fecha = DateTime.Now.Date;
+                calificacion.Estado = "Activo";
+                _db.Calificacion.Add(calificacion);
+                _db.SaveChanges();
                 res.Exito = 1;
-                res.Data = List;
             }
             catch (Exception ex)
             {

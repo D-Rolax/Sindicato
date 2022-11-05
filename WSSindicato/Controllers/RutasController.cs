@@ -95,15 +95,16 @@ namespace WSSindicato.Controllers
                                                  NombreGrupo = g.Nombre,
                                                  NombreComunidad = c.Nombre,
                                                  Estado = g.Estado,
-                                                 Rutas=g.Rutas.Select(x=>new { 
-                                                    Latitud=x.Latitud,
-                                                    Longitud=x.Longitud
+                                                 Rutas = g.Rutas.Select(x => new
+                                                 {
+                                                     Latitud = x.Latitud,
+                                                     Longitud = x.Longitud
                                                  })
                                              }
                                              ).ToListAsync();//new { idGrupo = x.IdGrupo, IdComunidad = x.IdComunidad, NombreGrupo = x.NombreComunidad, nombrecomunidad = x.NombreComunidad, estado = x.Estado, ruta = x.Rutas }).ToListAsync();
                                                              //Select(x => new { x.Key, count = x.Count() }).ToDictionaryAsync(x => x.Key, x => x.count);
-                var agrupar = from db in grupos_comuidad group db by new { db.IdGrupo,db.IdComunidad,db.NombreGrupo,db.NombreComunidad,db.Estado} into g select g.Key;
-                var grupos_comuidad_rutas = from db in agrupar select new {db.IdGrupo,db.IdComunidad,db.NombreGrupo,db.NombreComunidad,db.Estado, Rutas = _db.Rutas.Where(x=>x.ComunidadId==db.IdComunidad && x.GrupoId==db.IdGrupo)};
+                var agrupar = from db in grupos_comuidad group db by new { db.IdGrupo, db.IdComunidad, db.NombreGrupo, db.NombreComunidad, db.Estado } into g select g.Key;
+                var grupos_comuidad_rutas = from db in agrupar select new { db.IdGrupo, db.IdComunidad, db.NombreGrupo, db.NombreComunidad, db.Estado, Rutas = _db.Rutas.Where(x => x.ComunidadId == db.IdComunidad && x.GrupoId == db.IdGrupo) };
                 res.Exito = 1;
                 res.Data = grupos_comuidad_rutas;
             }

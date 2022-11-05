@@ -8,13 +8,15 @@ namespace Sindicato.common.Models.Response
     {
         public int Exito { get; set; }
         public string Mensaje { get; set; }
-        public List<DatosUsuario> Data{ get; set; }
+        public List<DatosUsuarioRequest> Data{ get; set; }
     }
-    public class DatosUsuario
+    public class DatosUsuarioRequest
     {
         public int Id { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public string Nombre { get; set; }
+        public string Estado { get; set; }
+        public string TipoUsuario { get; set; }
     }
 }

@@ -114,7 +114,7 @@ namespace Sindicato.prism.ViewModels
             };
 
             Respuesta response2 = await _apiService.GetUserByEmail(url, "api", "/user", "bearer", token.Token, emailRequest);
-            List<DatosUsuario> userResponse = (List<DatosUsuario>)response2.Data;
+            List<DatosUsuarioRequest> userResponse = (List<DatosUsuarioRequest>)response2.Data;
 
             Settings.User = JsonConvert.SerializeObject(userResponse);
             Settings.Token = JsonConvert.SerializeObject(token);

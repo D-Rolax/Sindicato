@@ -6,6 +6,7 @@ using Plugin.Permissions;
 using Prism;
 using Prism.Ioc;
 using Syncfusion.SfBusyIndicator.XForms.Droid;
+using Syncfusion.SfRating.XForms.Droid;
 
 namespace Sindicato.prism.Droid
 {
@@ -24,6 +25,7 @@ namespace Sindicato.prism.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             //Plugin.CurrentActivity.CrossCurrentActivity.Current.Init(this, savedInstanceState);
             new SfBusyIndicatorRenderer();
+            new SfRatingRenderer();
             Xamarin.FormsMaps.Init(this, savedInstanceState);
             LoadApplication(new App(new AndroidInitializer()));
         }

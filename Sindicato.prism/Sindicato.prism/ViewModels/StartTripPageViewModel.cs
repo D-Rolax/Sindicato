@@ -16,6 +16,8 @@ using Sindicato.prism.Helpers;
 using Xamarin.Essentials;
 using Newtonsoft.Json;
 using Sindicato.common.Helpers;
+using WSSindicato.Hubs;
+using Xamarin.Forms;
 
 namespace Sindicato.prism.ViewModels
 {
@@ -24,6 +26,7 @@ namespace Sindicato.prism.ViewModels
         private readonly INavigationService _navigationService;
         private readonly IGeolocationService _geolocationService;
         private readonly IApiService _apiService;
+        private readonly ISignalService _signalService;
         private string _buttonLabel;
         private bool _isSecondButtonVisible;
         private bool _isRunnig;
@@ -33,28 +36,35 @@ namespace Sindicato.prism.ViewModels
         private Grupos _grupo;
         private Comunidades _comunidad;
         private ObservableCollection<Grupos> _Grupos;
+        private List<DatosUsuarioRequest> _user;
         private ObservableCollection<Comunidades> _Comunidades;
         private DelegateCommand _getAddressComand;
         private DelegateCommand _startTripCommand;
         private RutasDetailsRequest _rutasDetailsRequest;
         private string _url;
         private TokenResponse _token;
+        private string _lbconected;
 
         public StartTripPageViewModel(INavigationService navigationService,
             IGeolocationService geolocationService,
-            IApiService apiService):base(navigationService)
+            IApiService apiService,
+            ISignalService signalService):base(navigationService)
         {
             Title = "Iniciar Viaje";
             _navigationService = navigationService;
             _geolocationService = geolocationService;
             _apiService = apiService;
+            _signalService = signalService;
             _rutasDetailsRequest = new RutasDetailsRequest { Rutas=new List<RutasDetailRequest>() };
             GetGrupoAsync();
             GetComunidadAsync();
             LoadSourceAsync();
             IsEnabled = true;
             ButtonLabel = "Iniciar Viaje";
+            _signalService.Connecting += signalService_Connecting;
+            _signalService.Connected += signalService_Connected;
         }
+
         public DelegateCommand CancelTripCommand => _getAddressComand ?? (_getAddressComand = new DelegateCommand(CancelTripAsync));
 
         public DelegateCommand GetAddressCommand => _getAddressComand ?? (_getAddressComand = new DelegateCommand(LoadSourceAsync));
@@ -73,6 +83,11 @@ namespace Sindicato.prism.ViewModels
         {
             get => _grupo;
             set => SetProperty(ref _grupo, value);
+        }
+        public string LbConnecte
+        {
+            get => _lbconected;
+            set => SetProperty(ref _lbconected, value);
         }
         public Comunidades Comunidad
         {
@@ -145,6 +160,7 @@ namespace Sindicato.prism.ViewModels
             await _apiService.DeleteRutasAsync(_url, "api", "/rutas/delete",model);
             IsRunning = false;
             await _navigationService.GoBackToRootAsync();
+            await _signalService.StopAsync();
         }
         private async Task EndTripAsync()
         {
@@ -155,6 +171,7 @@ namespace Sindicato.prism.ViewModels
             }
             IsRunning = true;
             await _navigationService.GoBackToRootAsync();
+            await _signalService.StopAsync();
         }
 
         private async  Task BeginTripAsync()
@@ -168,6 +185,11 @@ namespace Sindicato.prism.ViewModels
                 await App.Current.MainPage.DisplayAlert("Error de Conccion", "No hay conexión a Internet", "Aceptar");
                 return;
             }
+            _user = JsonConvert.DeserializeObject<List<DatosUsuarioRequest>>(Settings.User);
+
+            SignalRService.DeviceId = _user[0].Id;
+            _signalService.StartWidhReconnectionAsync();
+
             IsSecondButtonVisible = true;
             ButtonLabel = "Fin de viaje";
             StartTripPage.GetInstancia().AddPin(_position, Source,"Inicio",PinType.Place);
@@ -202,6 +224,13 @@ namespace Sindicato.prism.ViewModels
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 StartTripPage.GetInstancia().DrawLine(previousPosition, _position);
+            });
+            await _signalService.SendMessageToAll(new MessageItem
+            {
+                Latitud = _position.Latitude,
+                Longitud = _position.Longitude,
+                SourceId = _user[0].Id
+                //TargetId = Convert.ToInt32(enTargetId.Text)
             });
             _rutasDetailsRequest.Rutas.Add(new RutasDetailRequest
             {
@@ -334,5 +363,14 @@ namespace Sindicato.prism.ViewModels
             IsEnabled = true;
         }
 
+        private void signalService_Connected(object sender, EventArgs e)
+        {
+            LbConnecte = "Conectado";
+        }
+
+        private void signalService_Connecting(object sender, EventArgs e)
+        {
+            LbConnecte = "Conectando...";
+        }
     }
 }

@@ -44,9 +44,9 @@ namespace WSSindicato.Controllers
         {
             try
             {
-                    var list = db.Grupos.OrderByDescending(d=>d.Id).ToList();
-                    res.Data = list;
-                    res.Exito = 1;
+                var list = db.Grupos.OrderByDescending(d => d.Id).ToList();
+                res.Data = list;
+                res.Exito = 1;
             }
             catch (Exception ex)
             {

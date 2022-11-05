@@ -19,32 +19,32 @@ namespace WSSindicato.Services.GruposComunidad
         }
         public void Add(GrupoRequest model)
         {
-                var grupo = new Grupos();
-                grupo.Nombre = model.NombreGrupo;
-                grupo.Descripcion = model.Descripcion;
-                grupo.Estado = "Activo";
-                grupo.Fecha = DateTime.Now.Date;
-                db.Grupos.Add(grupo);
-                db.SaveChanges();
+            var grupo = new Grupos();
+            grupo.Nombre = model.NombreGrupo;
+            grupo.Descripcion = model.Descripcion;
+            grupo.Estado = "Activo";
+            grupo.Fecha = DateTime.Now.Date;
+            db.Grupos.Add(grupo);
+            db.SaveChanges();
 
         }
 
         public void delete(int Id)
         {
-                Grupos grupos = db.Grupos.Find(Id);
-                db.Remove(grupos);
-                db.SaveChanges();
+            Grupos grupos = db.Grupos.Find(Id);
+            db.Remove(grupos);
+            db.SaveChanges();
         }
 
         public void Edit(GrupoRequest model)
         {
-                Grupos grupo = db.Grupos.Find(model.IdGrupo);
-                grupo.Nombre = model.NombreGrupo;
-                grupo.Descripcion = model.Descripcion;
-                grupo.Estado = model.Estado;
-                grupo.Fecha = DateTime.Now.Date;
-                db.Entry(grupo).State=EntityState.Modified;
-                db.SaveChanges();
+            Grupos grupo = db.Grupos.Find(model.IdGrupo);
+            grupo.Nombre = model.NombreGrupo;
+            grupo.Descripcion = model.Descripcion;
+            grupo.Estado = model.Estado;
+            grupo.Fecha = DateTime.Now.Date;
+            db.Entry(grupo).State = EntityState.Modified;
+            db.SaveChanges();
         }
 
         public void Get()

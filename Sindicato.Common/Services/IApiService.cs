@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using WSSindicato.Hubs;
 using WSSindicato.Models.Request;
 using WSSindicato.Models.Response;
 
@@ -20,5 +21,6 @@ namespace Sindicato.common.Services
         bool CheckConnection();
         Task<Respuesta> DeleteRutasAsync(string urlBase, string ServicePrefix, string controller, RutasRequest model);
         Task<Respuesta> GetRutas(string urlBase, string ServicePrefix, string controller, RutasRequest model);
+        Task<Respuesta> AddComentario(string urlBase, string ServicePrefix, string controller, CalificacionRequest model);
     }
 }

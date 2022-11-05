@@ -31,16 +31,16 @@ namespace WSSindicato.Controllers
             Respuesta res = new Respuesta();
             try
             {
-                    //var lst = db.TiposVehiculos.OrderByDescending(d => d.Id).ToList();
-                    var lst = await db.TiposVehiculos
-                    .Include(d => d.Afiliados)
-                    .OrderByDescending(d => d.Id).ToListAsync();
-                    res.Exito = 1;
-                    res.Data = lst;
+                //var lst = db.TiposVehiculos.OrderByDescending(d => d.Id).ToList();
+                var lst = await db.TiposVehiculos
+                .Include(d => d.Afiliados)
+                .OrderByDescending(d => d.Id).ToListAsync();
+                res.Exito = 1;
+                res.Data = lst;
             }
             catch (Exception ex)
             {
-                res.Mensaje=ex.Message;
+                res.Mensaje = ex.Message;
             }
             return Ok(res);
         }
@@ -55,7 +55,7 @@ namespace WSSindicato.Controllers
             }
             catch (Exception ex)
             {
-                res.Mensaje=ex.Message;
+                res.Mensaje = ex.Message;
             }
             return Ok(res);
         }
